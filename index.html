@@ -143,66 +143,28 @@
         // Пример базы данных карт (пока простая)
         // Сюда нужно будет вставить ссылки на реальные картинки Таро
         const tarotDeck = [
-            {
-                name: "Шут (The Fool)",
-                text: "Начало нового пути, невинность, спонтанность, прыжок в неизвестность.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
-            },
-            {
-                name: "Маг (The Magician)",
-                text: "Сила воли, мастерство, реализация задуманного, концентрация.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg"
-            },
-            {
-                name: "Жрица (The High Priestess)",
-                text: "Интуиция, тайны, подсознание, мудрость, ожидание.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg"
-            },
-            {
-                name: "Императрица (The Empress)",
-                text: "Плодородие, изобилие, природа, материнская забота.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg"
-            },
-            {
-                name: "Император (The Emperor)",
-                text: "Власть, структура, контроль, отцовская фигура, стабильность.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg"
-            },
-            {
-                name: "Иерофант (The Hierophant)",
-                text: "Традиции, обучение, духовное наставничество, устои.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg"
-            },
-            {
-                name: "Влюбленные (The Lovers)",
-                text: "Любовь, гармония, важный выбор, союз.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg"
-            },
-            {
-                name: "Колесница (The Chariot)",
-                text: "Движение вперед, победа, контроль над эмоциями, решительность.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg"
-            },
-            {
-                name: "Сила (Strength)",
-                text: "Внутренняя сила, смелость, терпение, сострадание.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg"
-            },
-            {
-                name: "Отшельник (The Hermit)",
-                text: "Поиск истины, одиночество, самоанализ, внутренний свет.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg"
-            },
-            {
-                name: "Колесо Фортуны (Wheel of Fortune)",
-                text: "Циклы жизни, удача, перемены, судьба.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg"
-            },
-            {
-                name: "Смерть (Death)",
-                text: "Трансформация, конец старого, начало нового, переход.",
-                img: "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg"
-            }
+            { id: "0_fool", name: "Шут", img: "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg" },
+            { id: "1_magician", name: "Маг", img: "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg" },
+            { id: "2_priestess", name: "Верховная Жрица", img: "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg" },
+            { id: "3_empress", name: "Императрица", img: "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg" },
+            { id: "4_emperor", name: "Император", img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg" },
+            { id: "5_hierophant", name: "Иерофант", img: "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg" },
+            { id: "6_lovers", name: "Влюбленные", img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg" },
+            { id: "7_chariot", name: "Колесница", img: "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg" },
+            { id: "8_strength", name: "Сила", img: "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg" },
+            { id: "9_hermit", name: "Отшельник", img: "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg" },
+            { id: "10_wheel", name: "Колесо Фортуны", img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg" },
+            { id: "11_justice", name: "Справедливость", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg" },
+            { id: "12_hanged_man", name: "Повешенный", img: "https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg" },
+            { id: "13_death", name: "Смерть", img: "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg" },
+            { id: "14_temperance", name: "Умеренность", img: "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg" },
+            { id: "15_devil", name: "Дьявол", img: "https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg" },
+            { id: "16_tower", name: "Башня", img: "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg" },
+            { id: "17_star", name: "Звезда", img: "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg" },
+            { id: "18_moon", name: "Луна", img: "https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg" },
+            { id: "19_sun", name: "Солнце", img: "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg" },
+            { id: "20_judgement", name: "Суд", img: "https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg" },
+            { id: "21_world", name: "Мир", img: "https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg" }
         ];
 
         const cardElement = document.getElementById('tarotCard');
