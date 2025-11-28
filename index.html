@@ -152,6 +152,56 @@
                 name: "Маг (The Magician)",
                 text: "Сила воли, мастерство, реализация задуманного, концентрация.",
                 img: "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg"
+            },
+            {
+                name: "Жрица (The High Priestess)",
+                text: "Интуиция, тайны, подсознание, мудрость, ожидание.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg"
+            },
+            {
+                name: "Императрица (The Empress)",
+                text: "Плодородие, изобилие, природа, материнская забота.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg"
+            },
+            {
+                name: "Император (The Emperor)",
+                text: "Власть, структура, контроль, отцовская фигура, стабильность.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg"
+            },
+            {
+                name: "Иерофант (The Hierophant)",
+                text: "Традиции, обучение, духовное наставничество, устои.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg"
+            },
+            {
+                name: "Влюбленные (The Lovers)",
+                text: "Любовь, гармония, важный выбор, союз.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg"
+            },
+            {
+                name: "Колесница (The Chariot)",
+                text: "Движение вперед, победа, контроль над эмоциями, решительность.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg"
+            },
+            {
+                name: "Сила (Strength)",
+                text: "Внутренняя сила, смелость, терпение, сострадание.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg"
+            },
+            {
+                name: "Отшельник (The Hermit)",
+                text: "Поиск истины, одиночество, самоанализ, внутренний свет.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg"
+            },
+            {
+                name: "Колесо Фортуны (Wheel of Fortune)",
+                text: "Циклы жизни, удача, перемены, судьба.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg"
+            },
+            {
+                name: "Смерть (Death)",
+                text: "Трансформация, конец старого, начало нового, переход.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg"
             }
         ];
 
@@ -189,19 +239,14 @@
         });
 
         function closeApp() {
-                    // Если карта не перевернута, ничего не делаем (защита от случайных нажатий)
-                    if (!isFlipped) return;
+            if (!isFlipped || !selectedCardId) return;
 
-                    // Формируем объект с данными, которые получит бот
-                    const dataToSend = JSON.stringify({
-                        card_name: title.innerText,
-                        card_desc: desc.innerText
-                    });
+            const dataToSend = JSON.stringify({
+                card_id: selectedCardId // Отправляем теперь ID, а не имя
+            });
 
-                    // Отправляем данные в Telegram и закрываем окно
-                    tg.sendData(dataToSend);
-                }
+            tg.sendData(dataToSend);
+        }
     </script>
 </body>
 </html>
-
