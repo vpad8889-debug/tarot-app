@@ -194,9 +194,18 @@
         });
 
         function closeApp() {
-            // Тут можно отправить данные боту перед закрытием
-            tg.close();
-        }
+                    // Если карта не перевернута, ничего не делаем (защита от случайных нажатий)
+                    if (!isFlipped) return;
+
+                    // Формируем объект с данными, которые получит бот
+                    const dataToSend = JSON.stringify({
+                        card_name: title.innerText,
+                        card_desc: desc.innerText
+                    });
+
+                    // Отправляем данные в Telegram и закрываем окно
+                    tg.sendData(dataToSend);
+                }
     </script>
 </body>
 </html>
