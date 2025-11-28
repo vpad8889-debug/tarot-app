@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mystic Tarot</title>
+    <!-- Подключаем скрипт Telegram WebApp -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Красивый шрифт Cinzel для мистики -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. Основной стиль (Dark Mode) --- */
+        body {
+            background-color: #0b0b0b; /* Глубокий черный */
+            color: #d4af37; /* Золотой текст */
+            font-family: 'Cinzel', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #d4af37;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        /* --- 2. Контейнер карты (Сцена) --- */
+        .scene {
+            width: 200px;
+            height: 350px;
+            perspective: 1000px; /* Для 3D эффекта */
+            cursor: pointer;
+        }
+
+        /* Сама карта */
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 1s; /* Время переворота */
+            transform-style: preserve-3d;
+        }
+
+        /* Класс для переворота (добавляем через JS) */
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* Стороны карты */
+        .card__face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Скрываем заднюю часть при повороте */
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Рубашка (Задняя сторона) */
+        .card__face--front {
+            background: linear-gradient(135deg, #1a0b2e, #000);
+            border: 2px solid #d4af37;
+            background-image: url('https://i.pinimg.com/564x/48/8d/64/488d649da03d08f7b76df1733568c4a9.jpg'); /* Временная ссылка на рубашку */
+            background-size: cover;
+        }
+
+        /* Лицо карты (Передняя сторона, изначально скрыта) */
+        .card__face--back {
+            background: #fff; /* Или картинка карты */
+            transform: rotateY(180deg);
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #d4af37;
+        }
+
+        /* --- 3. Описание под картой --- */
+        #description {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            max-width: 80%;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        /* Кнопка "Принять" */
+        #mainBtn {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: transparent;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none; /* Нельзя нажать пока невидима */
+            transition: all 0.5s;
+        }
+
+        #mainBtn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="title">Коснитесь карты...</h1>
+
+    <div class="scene">
+        <div class="card" id="tarotCard">
+            <!-- Рубашка -->
+            <div class="card__face card__face--front"></div>
+            <!-- Лицевая сторона (сюда JS подставит картинку) -->
+            <div class="card__face card__face--back"></div>
+        </div>
+    </div>
+
+    <div id="description"></div>
+    <button id="mainBtn" onclick="closeApp()">Принять судьбу</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Раскрываем на весь экран
+
+        // Пример базы данных карт (пока простая)
+        // Сюда нужно будет вставить ссылки на реальные картинки Таро
+        const tarotDeck = [
+            {
+                name: "Шут",
+                text: "Новое начало, приключения, спонтанность.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
+            },
+            {
+                name: "Маг",
+                text: "Сила воли, мастерство, создание своей реальности.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg"
+            },
+            {
+                name: "Верховная Жрица",
+                text: "Интуиция, тайны, подсознание.",
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg"
+            }
+        ];
+
+        const cardElement = document.getElementById('tarotCard');
+        const backFace = document.querySelector('.card__face--back');
+        const title = document.getElementById('title');
+        const desc = document.getElementById('description');
+        const btn = document.getElementById('mainBtn');
+
+        let isFlipped = false;
+
+        cardElement.addEventListener('click', function() {
+            if (isFlipped) return; // Чтобы нельзя было перевернуть обратно
+
+            // 1. Выбираем случайную карту
+            const randomCard = tarotDeck[Math.floor(Math.random() * tarotDeck.length)];
+
+            // 2. Устанавливаем картинку (пока карта перевернута рубашкой к нам)
+            backFace.style.backgroundImage = `url('${randomCard.img}')`;
+
+            // 3. Запускаем анимацию переворота
+            cardElement.classList.add('is-flipped');
+            isFlipped = true;
+
+            // 4. Через 0.5 сек меняем текст и показываем описание
+            setTimeout(() => {
+                title.innerText = randomCard.name;
+                desc.innerText = randomCard.text;
+                desc.style.opacity = 1;
+
+                // Показываем кнопку и отправляем вибрацию в телефон
+                btn.classList.add('visible');
+                tg.HapticFeedback.impactOccurred('heavy');
+            }, 600);
+        });
+
+        function closeApp() {
+            // Тут можно отправить данные боту перед закрытием
+            tg.close();
+        }
+    </script>
+</body>
+</html>
